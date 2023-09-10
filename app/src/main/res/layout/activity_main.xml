@@ -26,7 +26,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/password_or_len" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -43,6 +43,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 android:text="@string/password_or_len_helper_text" />
 
@@ -50,7 +51,7 @@
                 android:id="@+id/wipeEmbeddedSim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
+                android:layout_marginTop="15dp"
                 android:layoutDirection="rtl"
                 android:text="@string/wipe_embedded_sim_checkbox"
                 android:textAppearance="?attr/textAppearanceBodyLarge" />
@@ -60,7 +61,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:textAppearance="?attr/textAppearanceBodyLarge"
