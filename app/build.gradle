@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "me.lucky.duress"
+        applicationId "com.ryosoftware.duress"
         minSdk 23
         targetSdk 32
         versionCode 10
@@ -36,6 +36,7 @@ android {
     lint {
         disable 'MissingTranslation'
     }
+    namespace 'com.ryosoftware.duress'
 }
 
 dependencies {
@@ -43,12 +44,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
     implementation 'androidx.security:security-crypto:1.0.0'
-    // https://issuetracker.google.com/issues/238425626
     implementation('androidx.preference:preference-ktx:1.2.0') {
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'

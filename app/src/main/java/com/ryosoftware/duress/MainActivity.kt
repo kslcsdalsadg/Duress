@@ -1,8 +1,9 @@
-package me.lucky.duress
+package com.ryosoftware.duress
 
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
@@ -14,10 +15,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
 
-import me.lucky.duress.admin.DeviceAdminManager
-import me.lucky.duress.databinding.ActivityMainBinding
+import com.ryosoftware.duress.admin.DeviceAdminManager
+import com.ryosoftware.duress.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -60,14 +60,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init2() {
-        selectInterface()
         binding.apply {
-            tabs.selectTab(tabs.getTabAt(prefs.mode))
-            action.editText?.setText(prefs.action)
-            receiver.editText?.setText(prefs.receiver)
-            extraKey.editText?.setText(prefs.extraKey)
-            extraValue.editText?.setText(prefs.extraValue)
+            val show_embedded_sim_wipe_option = when (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                true -> View.VISIBLE
+                false -> View.GONE
+            }
             passwordOrLen.editText?.setText(prefs.passwordOrLen)
+            wipeEmbeddedSim.isChecked = prefs.isWipeEmbeddedSim
+            wipeEmbeddedSim.visibility = show_embedded_sim_wipe_option
             keyguardType.check(when (prefs.keyguardType) {
                 KeyguardType.A.value -> R.id.keyguardTypeA
                 KeyguardType.B.value -> R.id.keyguardTypeB
@@ -116,37 +116,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setup() = binding.apply {
-        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab == null) return
-                setOff()
-                for (m in Mode.values()) {
-                    if (m.value == tab.position) {
-                        prefs.mode = m.value
-                        break
-                    }
-                }
-                selectInterface()
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-
-        })
-        action.editText?.doAfterTextChanged {
-            prefs.action = it?.toString()?.trim() ?: ""
-        }
-        receiver.editText?.doAfterTextChanged {
-            prefs.receiver = it?.toString()?.trim() ?: ""
-        }
-        extraKey.editText?.doAfterTextChanged {
-            prefs.extraKey = it?.toString()?.trim() ?: ""
-        }
-        extraValue.editText?.doAfterTextChanged {
-            prefs.extraValue = it?.toString()?.trim() ?: ""
-        }
         passwordOrLen.editText?.doAfterTextChanged {
             prefs.passwordOrLen = it?.toString()?.trim() ?: ""
+        }
+        wipeEmbeddedSim.setOnCheckedChangeListener { _, checked ->
+            prefs.isWipeEmbeddedSim = checked
         }
         keyguardType.setOnCheckedChangeListener { _, checkedId ->
             prefs.keyguardType = when (checkedId) {
@@ -162,28 +136,6 @@ class MainActivity : AppCompatActivity() {
                 return@setOnCheckedChangeListener
             }
             prefs.isEnabled = isChecked
-        }
-    }
-
-    private fun selectInterface() {
-        val v = when (prefs.mode) {
-            Mode.BROADCAST.value -> View.VISIBLE
-            Mode.WIPE.value -> View.GONE
-            Mode.TEST.value -> {
-                NotificationManager(this).createNotificationChannels()
-                View.GONE
-            }
-            else -> View.GONE
-        }
-        binding.apply {
-            action.visibility = v
-            receiver.visibility = v
-            extraKey.visibility = v
-            extraValue.visibility = v
-            space1.visibility = v
-            space2.visibility = v
-            space3.visibility = v
-            space4.visibility = v
         }
     }
 
@@ -219,7 +171,7 @@ class MainActivity : AppCompatActivity() {
             requestAccessibilityPermission()
             return
         }
-        if (prefs.mode == Mode.WIPE.value && !hasAdminPermission()) requestAdminPermission()
+        if (!hasAdminPermission()) requestAdminPermission()
     }
 
     private fun requestAccessibilityPermission() =
@@ -227,12 +179,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestAdminPermission() = startActivity(admin.makeRequestIntent())
 
-    private fun hasPermissions(): Boolean {
-        var ok = hasAccessibilityPermission()
-        if (prefs.mode == Mode.WIPE.value)
-            ok = ok && hasAdminPermission()
-        return ok
-    }
+    private fun hasPermissions(): Boolean { return hasAccessibilityPermission() && hasAdminPermission() }
 
     private fun hasAccessibilityPermission(): Boolean {
         for (info in accessibilityManager?.getEnabledAccessibilityServiceList(

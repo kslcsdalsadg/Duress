@@ -1,4 +1,4 @@
-package me.lucky.duress
+package com.ryosoftware.duress
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
@@ -10,7 +10,7 @@ import android.content.IntentFilter
 import android.view.accessibility.AccessibilityEvent
 import java.lang.ref.WeakReference
 
-import me.lucky.duress.admin.DeviceAdminManager
+import com.ryosoftware.duress.admin.DeviceAdminManager
 
 class AccessibilityService : AccessibilityService() {
     companion object {
@@ -63,11 +63,7 @@ class AccessibilityService : AccessibilityService() {
             KeyguardType.B.value -> checkKeyguardTypeB(event)
             else -> return
         }) return
-        when (prefs.mode) {
-            Mode.TEST.value -> sendNotification()
-            Mode.WIPE.value -> wipeData()
-            Mode.BROADCAST.value -> sendBroadcast()
-        }
+        wipeData()
     }
 
     override fun onInterrupt() {}
@@ -208,32 +204,10 @@ class AccessibilityService : AccessibilityService() {
         counter.clear()
     }
 
-    private fun sendNotification() = NotificationManager(this).send()
-
-    private fun sendBroadcast() {
-        val action = prefs.action
-        if (action.isEmpty()) return
-        sendBroadcast(Intent(action).apply {
-            val cls = prefs.receiver.split('/')
-            val packageName = cls.firstOrNull() ?: ""
-            if (packageName.isNotEmpty()) {
-                setPackage(packageName)
-                if (cls.size == 2)
-                    setClassName(
-                        packageName,
-                        "$packageName.${cls[1].trimStart('.')}",
-                    )
-            }
-            addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-            val extraKey = prefs.extraKey
-            if (extraKey.isNotEmpty()) putExtra(extraKey, prefs.extraValue)
-        })
-    }
-
     private fun wipeData() = try { admin.wipeData() } catch (exc: SecurityException) {}
 
     private class LockReceiver(
-        private val service: WeakReference<me.lucky.duress.AccessibilityService>,
+        private val service: WeakReference<com.ryosoftware.duress.AccessibilityService>,
     ) : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action != Intent.ACTION_USER_PRESENT &&

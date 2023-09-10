@@ -1,44 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicatorFullWidth="true"
-        app:tabMode="fixed">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tab_broadcast" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tab_wipe" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tab_test" />
-
-    </com.google.android.material.tabs.TabLayout>
-
     <ScrollView
         android:layout_margin="32dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:isScrollContainer="false"
-        app:layout_constraintTop_toBottomOf="@id/tabs"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -47,85 +21,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/action"
-                android:layout_width="match_parent"
+            <TextView
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:layout_marginEnd="5dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/action">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Space
-                android:id="@+id/space1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/receiver"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/receiver">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Space
-                android:id="@+id/space2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/extraKey"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/extra_key">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Space
-                android:id="@+id/space3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/extraValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/extra_value">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Space
-                android:id="@+id/space4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp" />
+                android:layout_marginVertical="5dp"
+                android:text="@string/password_or_len" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordOrLen"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password_or_len"
-                app:helperText="@string/password_or_len_helper_text"
-                app:helperTextEnabled="true">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -133,17 +40,27 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <View
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="10dp"
-                android:background="?android:attr/listDivider" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:text="@string/password_or_len_helper_text" />
+
+            <CheckBox
+                android:id="@+id/wipeEmbeddedSim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:layoutDirection="rtl"
+                android:text="@string/wipe_embedded_sim_checkbox"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <RadioGroup
                 android:id="@+id/keyguardType"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp">
 
                 <TextView
                     android:textAppearance="?attr/textAppearanceBodyLarge"
@@ -175,6 +92,7 @@
                 android:text="@string/keyguard_type_description" />
 
         </LinearLayout>
+
     </ScrollView>
 
     <ToggleButton

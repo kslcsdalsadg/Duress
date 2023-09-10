@@ -1,4 +1,4 @@
-package me.lucky.duress
+package com.ryosoftware.duress
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,12 +12,8 @@ import androidx.security.crypto.MasterKeys
 class Preferences(ctx: Context, encrypted: Boolean = true) {
     companion object {
         private const val ENABLED = "enabled"
-        private const val MODE = "mode"
-        private const val ACTION = "action"
-        private const val RECEIVER = "receiver"
-        private const val EXTRA_KEY = "extra_key"
-        private const val EXTRA_VALUE = "extra_value"
         private const val PASSWORD_OR_LEN = "password_or_len"
+        private const val WIPE_EMBEDDED_SIM = "wipe_embedded_sim"
         private const val KEYGUARD_TYPE = "keyguard_type"
         private const val SHOW_PROMINENT_DISCLOSURE = "show_prominent_disclosure"
 
@@ -54,35 +50,16 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         get() = prefs.getBoolean(ENABLED, prefs.getBoolean(SERVICE_ENABLED, false))
         set(value) = prefs.edit { putBoolean(ENABLED, value) }
 
-    var mode: Int
-        get() = prefs.getInt(MODE, Mode.BROADCAST.value)
-        set(value) = prefs.edit { putInt(MODE, value) }
-
-    var action: String
-        get() = prefs.getString(ACTION, "") ?: ""
-        set(value) = prefs.edit { putString(ACTION, value) }
-
-    var receiver: String
-        get() = prefs.getString(RECEIVER, "") ?: ""
-        set(value) = prefs.edit { putString(RECEIVER, value) }
-
-    var extraKey: String
-        get() = prefs.getString(EXTRA_KEY, "code") ?: ""
-        set(value) = prefs.edit { putString(EXTRA_KEY, value) }
-
-    var extraValue: String
-        get() = prefs.getString(
-            EXTRA_VALUE,
-            prefs.getString(SECRET, prefs.getString(AUTHENTICATION_CODE, "")),
-        ) ?: ""
-        set(value) = prefs.edit { putString(EXTRA_VALUE, value) }
-
     var passwordOrLen: String
         get() = prefs.getString(
             PASSWORD_OR_LEN,
             prefs.getInt(PASSWORD_LEN, 0).toString(),
         ) ?: ""
         set(value) = prefs.edit { putString(PASSWORD_OR_LEN, value) }
+
+    var isWipeEmbeddedSim: Boolean
+        get() = prefs.getBoolean(WIPE_EMBEDDED_SIM, false)
+        set(value) = prefs.edit { putBoolean(WIPE_EMBEDDED_SIM, value) }
 
     var keyguardType: Int
         get() = prefs.getInt(KEYGUARD_TYPE, KeyguardType.A.value)
@@ -110,12 +87,6 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
             }
         }
     }
-}
-
-enum class Mode(val value: Int) {
-    BROADCAST(0),
-    WIPE(1),
-    TEST(2),
 }
 
 enum class KeyguardType(val value: Int) {

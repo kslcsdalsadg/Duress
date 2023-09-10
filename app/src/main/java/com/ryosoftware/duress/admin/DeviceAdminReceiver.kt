@@ -1,4 +1,4 @@
-package me.lucky.duress.admin
+package com.ryosoftware.duress.admin
 
 import android.app.admin.DeviceAdminReceiver
 
