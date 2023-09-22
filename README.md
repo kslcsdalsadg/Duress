@@ -2,15 +2,6 @@
 
 Duress password trigger.
 
-[<img
-     src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/me.lucky.duress/)
-[<img
-      src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
-      alt="Get it on Google Play"
-      height="80">](https://play.google.com/store/apps/details?id=me.lucky.duress)
-
 <img 
      src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" 
      width="30%" 
@@ -27,9 +18,7 @@ Be aware that the app does not work in _safe mode_.
 
 ## Tested
 
-* Emulator, Android 12
-* Google Pixel 4a/5a, Android 12
-* Samsung Tab S8, Android 12
+* Google Pixel 7Pro with GrapheneOS, Android 13
 
 ## Permissions
 
